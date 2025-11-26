@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Düzenle | <%= post.title %></title>
+
+    <%- include('../partials/bootstrap') %>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row flex-nowrap">
+
+    <!-- Sidebar -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- Main Content -->
+    <div class="col py-4" >
+
+        <!-- Başlık -->
+        <h2 class="admin-title mb-3">Haber / Yazı Düzenle</h2>
+        <p class="text-muted">Düzenlenen post: <strong><%= post.title %></strong></p>
+
+        <!-- Kart -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Post Güncelle</h4>
+            </div>
+
+            <div class="card-body">
+                
+                <form action="/dashboard/postUpdate/<%= post._id %>" method="POST">
+
+                    <!-- Başlık -->
+                    <div class="mb-3">
+                        <label class="form-label">Başlık</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            name="title" 
+                            value="<%= post.title %>" 
+                            required
+                        >
+                    </div>
+
+                    <!-- Kategori -->
+                    <div class="mb-3">
+                        <label class="form-label">Kategori</label>
+                        <select class="form-select" name="category" required>
+                            <% if(categories && categories.length > 0) { %>
+                                <% categories.forEach(category => { %>
+                                    <option 
+                                        value="<%= category._id %>" 
+                                        <%= post.category && category._id.toString() === post.category.toString() ? 'selected' : '' %>
+                                    >
+                                        <%= category.name %>
+                                    </option>
+                                <% }) %>
+                            <% } else { %>
+                                <option value="" disabled>Kategori bulunamadı</option>
+                            <% } %>
+                        </select>
+                    </div>
+
+                    <!-- İçerik -->
+                    <div class="mb-3">
+                        <label class="form-label">İçerik</label>
+                        <textarea 
+                            class="form-control" 
+                            name="content" 
+                            rows="12" 
+                            required
+                        ><%= post.content %></textarea>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex">
+                        <button type="submit" class="btn btn-outline-success px-4">Güncelle</button>
+                        <a href="/dashboard" class="btn btn-secondary ms-3 px-4">İptal</a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div> 
+
+  </div>
+</div>
+</body>
+</html>

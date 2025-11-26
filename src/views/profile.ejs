@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcı Profili | NewsHub</title>
+    <%- include("partials/bootstrap") %>
+</head>
+
+<body  style="background-color: #F3F2EC">
+
+<div class="container-fluid">
+  <div class="row flex-nowrap">
+      
+    <%- include('partials/sidebar') %>
+    
+    <div class="col py-3"> 
+      
+      <h1 class="mb-4" style="color: #1E93AB;">Profil Bilgileri</h1>
+      
+      <div class="card mb-5 shadow-sm">
+        <div class="card-header bg-danger text-white">
+          <h4 class="mb-0">Bilgileri Güncelle</h4>
+        </div>
+        <div class="card-body">
+
+          <% if (typeof successMessage !== 'undefined') { %>
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <%= successMessage %>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+          <% } %>
+
+          <% if (typeof errorMessage !== 'undefined') { %>
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <%= errorMessage %>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+          <% } %>
+          <form method="POST" action="/profile">
+            
+            <div class="mb-3">
+              <label class="form-label">İsim</label>
+              <input
+                type="text"
+                name="name"
+                class="form-control"
+                value="<%= user.name %>"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input
+                type="email"
+                name="email"
+                class="form-control"
+                value="<%= user.email %>"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Şifre (opsiyonel)</label>
+              <input
+                type="password"
+                name="password"
+                class="form-control"
+                placeholder="Yeni şifre girin"
+              />
+            </div>
+
+            <button type="submit" class="btn btn-outline-success w-100">Profil Güncelle</button>
+          </form>
+          </div>
+      </div>
+    </div>
+    </div> </div> </body>
+</html>

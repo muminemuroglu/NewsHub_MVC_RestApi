@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewsHub | <%= post.title %></title>  
+    <link rel="stylesheet" href="/css/header.css"> 
+    <%- include("../partials/bootstrap") %>
+</head>
+<body>
+    
+    <%- include("../partials/header") %>
+    <div class="container mt-4 mb-5">
+        
+        <!-- Post Başlığı ve Meta Bilgiler -->
+        <h1 class="mb-3" style="color: #1E93AB;"><%= post.title %></h1>
+         <!-- Resim -->
+        <% if (post.image) { %>
+            <img src="<%= post.image %>" class="card-img-top" alt="Post Resmi" style="height:200px; object-fit:cover;">
+        <% } %>
+
+        <p class="text-muted small mt-3">
+            Yazar: 
+            <strong>
+                <%= post.author && post.author.name ? post.author.name : 'Bilinmiyor' %>
+            </strong> 
+            | 
+            Kategori: 
+            <span class="badge" style="background-color: #D4C9BE;">
+                <%= post.category && post.category.name ? post.category.name : 'Genel' %>
+            </span> 
+            | 
+            Yayın Tarihi: 
+            <%= new Date(post.createdAt).toLocaleDateString('tr-TR') %>
+        </p>
+
+        <hr>
+
+        <!-- Post İçeriği -->
+        <div class="post-content mb-5">
+            <p><%= post.content %></p>
+        </div>
+        <h4>Yorumlar</h4>
+        <hr>
+<% if (typeof error != "undefined") { %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <%= error %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% } %>
+        <!-- Yorumlar Listesi -->
+<% if (comments && comments.length > 0) { %>
+    <% comments.forEach(comment => { %>
+
+         
+        <div class="card mb-2 shadow-sm">
+            <div class="card-body">
+                <strong><%= comment.userId.name %></strong>:
+                <span><%= comment.content %></span>
+                <small class="text-muted float-end">
+                    <%= new Date(comment.createdAt).toLocaleString('tr-TR') %>
+                </small>
+
+                <% if (user && comment.userId._id.toString() === user.id) { %>
+                    <!-- Kullanıcı sadece kendi yorumunu silebilir -->
+                    <form method="POST" action="/comments/delete/<%= comment._id %>" class="d-inline float-end me-2">
+                        <button class="btn btn-sm btn-outline-danger">Sil</button>
+                    </form>
+                <% } %>
+            </div>
+        </div>
+    <% }) %>
+<% } else { %>
+    <p class="text-muted">Henüz yorum yok.</p>
+<% } %>
+
+<!-- Yorum Ekleme Formu (sadece giriş yapmış kullanıcılar görecek) -->
+<% if (user) { %>
+    <h5 class="mt-4">Yorum Yaz</h5>
+    <form method="POST" action="/comments/add/<%= post._id %>">
+        <textarea name="content" class="form-control mb-2" rows="3" required></textarea>
+        <button type="submit" class="btn text-white " style="background-color: #1E93AB;">Gönder</button>
+    </form>
+<% } else { %>
+    <p class="text-muted mt-3">Yorum yazmak için <a href="/auth">giriş yapmalısınız</a>.</p>
+<% } %>
+
+
+    </div>
+</body>
+</html>

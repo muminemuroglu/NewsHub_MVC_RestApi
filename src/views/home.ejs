@@ -3,10 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>NewsHub | <%= pageTitle %></title> 
+    
     <link rel="stylesheet" href="/css/header.css"> 
-     <%- include("partials/bootstrap") %>
+    <%- include("partials/bootstrap") %>
 </head>
-        <%- include("partials/header") %>
+<body style="background-color: #F3F2EC;">
+    
+    <%- include("partials/header") %>
 
+    <div class="container mt-4">
+        
+        <h1 class="mb-4"><%= pageTitle %></h1>
+        <hr>
+
+        <div class="row">
+            <% if (posts && posts.length > 0) { %>
+                <% posts.forEach(post => { %>
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                             <!-- Resim -->
+        <% if (post.image) { %>
+            <img src="<%= post.image %>" class="card-img-top" alt="Post Resmi" style="height:200px; object-fit:cover;">
+        <% } %>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="/posts/<%= post._id %>" style="color:#1E93AB; text-decoration:none;"><%= post.title %></a>
+                                </h5>
+                                
+                                <p class="card-subtitle mb-2 text-muted">
+                                    Kategori: 
+                                    <strong>
+                                        <%= post.category ? post.category.name : 'Yok' %>
+                                    </strong>
+                                </p>
+
+                                <p class="card-text">
+                                    <%= post.content.substring(0, 150) %>...
+                                </p>
+                                
+                                <a href="/posts/<%= post._id %>" class="btn btn-sm mt-2 text-white" style="background-color: #1E93AB;">Devamını Oku</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="col-12">
+                    <div class="alert alert-info" role="alert">
+                        <%= activeCategoryId ? "Bu kategoriye ait henüz bir haber bulunmamaktadır." : "Henüz yayınlanmış bir haber bulunmamaktadır." %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    </body>
 </html>

@@ -1,127 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <%- include("partials/bootstrap") %>
-</head>
-<body>
-    
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel | NewsHub</title>
+    <%- include('partials/bootstrap') %>
+    <link rel="stylesheet" href="/css/admin.css" />
+  </head>
 
-<div class="container-fluid">
-  <div class="row flex-nowrap">
-    <!-- Sidebar -->
-    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark min-vh-100">
-      <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white">
-        <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-          <span class="fs-5 d-none d-sm-inline">📰 NewsHub Admin</span>
-        </a>
+  <body>
+    <div class="container-fluid">
+      <div class="row flex-nowrap">
+        <!-- Sidebar -->
+        <%- include('partials/sidebar') %>
 
-        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-          <li class="nav-item">
-            <a href="/admin/dashboard" class="nav-link text-white">
-              <i class="bi bi-speedometer2"></i>
-              <span class="ms-2 d-none d-sm-inline">Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a href="/admin/users" class="nav-link text-white">
-              <i class="bi bi-people"></i>
-              <span class="ms-2 d-none d-sm-inline">Kullanıcılar</span>
-            </a>
-          </li>
-          <li>
-            <a href="/admin/posts" class="nav-link text-white">
-              <i class="bi bi-file-earmark-text"></i>
-              <span class="ms-2 d-none d-sm-inline">Haberler</span>
-            </a>
-          </li>
-          <li>
-            <a href="/admin/comments" class="nav-link text-white">
-              <i class="bi bi-chat-dots"></i>
-              <span class="ms-2 d-none d-sm-inline">Yorumlar</span>
-            </a>
-          </li>
-          <li>
-            <a href="/logout" class="nav-link text-white">
-              <i class="bi bi-box-arrow-right"></i>
-              <span class="ms-2 d-none d-sm-inline">Çıkış Yap</span>
-            </a>
-          </li>
-        </ul>
-        <hr>
-        <div class="dropdown pb-4">
-          <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-          
-            <span class="d-none d-sm-inline mx-1">ALİ</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li><a class="dropdown-item" href="/profile">Profil</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/logout">Çıkış</a></li>
-          </ul>
+        <!-- Main Content -->
+        <div class="col py-3">
+          <!-- Sayfa Başlığı -->
+          <h2 class="admin-title mb-2">Yönetim Paneli</h2>
+          <p class="text-muted">
+            Hoş geldin, <%= user ? user.username : 'Admin' %>
+          </p>
+
+          <!-- Status Message -->
+          <% if (typeof status !== 'undefined' && status) { %>
+          <div
+            class="alert alert-info alert-dismissible fade show"
+            role="alert"
+          >
+            <%= status %>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+            ></button>
+          </div>
+          <% } %>
+
+          <!-- Son Eklenen Haberler -->
+          <div class="card shadow-sm mb-4 mt-4">
+            <div class="card-header bg-danger text-white">
+              <h4 class="mb-0">Son Eklenen Haberler</h4>
+            </div>
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Başlık</th>
+                    <th>Yazar</th>
+                    <th>Kategori</th>
+                    <th>Tarih</th>
+                    <th>Aksiyon</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (lastPosts && lastPosts.length > 0) { %> <%
+                  lastPosts.forEach(post => { %>
+                  <tr>
+                    <td><%= post.title %></td>
+                    <td>
+                      <%= post.author ? post.author.name : 'Bilinmiyor' %>
+                    </td>
+                    <td><%= post.category ? post.category.name : 'Yok' %></td>
+                    <td>
+                      <%= new Date(post.createdAt).toLocaleDateString('tr-TR')
+                      %>
+                    </td>
+                    <td>
+                      <a
+                        href="/admin/posts/update/<%= post._id %>"
+                        class="btn btn-outline-success btn-sm"
+                        >Görüntüle</a
+                      >
+                    </td>
+                  </tr>
+                  <% }) %> <% } else { %>
+                  <tr>
+                    <td colspan="5" class="text-center text-muted">
+                      Henüz yayınlanmış haber yok.
+                    </td>
+                  </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Kategori Yönetimi -->
+          <div class="card shadow-sm mb-4">
+            <div class="card-header bg-danger text-white">
+              <h4 class="mb-0">Kategori Ekle</h4>
+            </div>
+            <div class="card-body">
+              <form action="/admin/categories/add" method="POST" class="mb-4">
+                <div class="mb-3">
+                  <label class="form-label">Kategori Adı</label>
+                  <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    placeholder="Kategori adı giriniz"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Açıklama</label>
+                  <textarea
+                    name="description"
+                    class="form-control"
+                    placeholder="Açıklama giriniz"
+                  ></textarea>
+                </div>
+
+                <div class="form-check mb-3">
+                  <input
+                    type="checkbox"
+                    name="isactive"
+                    class="form-check-input"
+                    id="isactive"
+                  />
+                  <label class="form-check-label" for="isactive"
+                    >Aktif mi?</label
+                  >
+                </div>
+
+                <button type="submit" class="btn btn-outline-success w-100">
+                  Kaydet
+                </button>
+              </form>
+
+              <h5 class="mb-3">Mevcut Kategoriler</h5>
+
+              <!-- Scroll alanı -->
+              <div class="category-scroll">
+                <ul class="list-group">
+                  <% if (categories && categories.length > 0) { %> <%
+                  categories.forEach(cat => { %>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <strong><%= cat.name %></strong><br />
+                      <small class="text-muted"
+                        ><%= cat.description || '' %></small
+                      >
+                    </div>
+                    <div>
+                      <span
+                        class="badge bg-<%= cat.isactive ? 'success' : 'secondary' %> me-2"
+                      >
+                        <%= cat.isactive ? 'Aktif' : 'Pasif' %>
+                      </span>
+                      <a
+                        href="/admin/categories/delete/<%= cat._id %>"
+                        class="btn btn-danger btn-sm"
+                        >Sil</a
+                      >
+                    </div>
+                  </li>
+                  <% }) %> <% } else { %>
+                  <li class="list-group-item text-muted">Hiç kategori yok.</li>
+                  <% } %>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- Main Content -->
-    <div class="col py-3">
-      <h2>Yönetim Paneli</h2>
-      <p class="text-muted">Hoş geldin, ALİ</p>
-
-      <div class="row g-3">
-        <div class="col-md-4">
-          <div class="card text-bg-primary shadow">
-            <div class="card-body">
-              <h5 class="card-title">Kullanıcı Sayısı</h5>
-              <p class="card-text fs-4">1</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card text-bg-success shadow">
-            <div class="card-body">
-              <h5 class="card-title">Haber Sayısı</h5>
-              <p class="card-text fs-4">5</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card text-bg-warning shadow">
-            <div class="card-body">
-              <h5 class="card-title">Yorum Sayısı</h5>
-              <p class="card-text fs-4">5</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-5">
-        <h4>Son Eklenen Haberler</h4>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Başlık</th>
-              <th>Yazar</th>
-              <th>Tarih</th>
-              <th>Durum</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
-</body>
+  </body>
 </html>

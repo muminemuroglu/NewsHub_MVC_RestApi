@@ -1,24 +1,36 @@
+/* Kategori Linkleri ve SABİT LİNKLER için Hover Efekti */
+.navbar-nav .nav-link {
+  color: #495057 !important; /* Koyu Gri (Genel link rengi) */
+  transition: color 0.2s ease;
+  border-bottom: 2px solid transparent; /* Altta gizli çizgi */
+  padding-bottom: 0.7rem;
+}
 
-  /* Kategori Linkleri için Hover Efekti */
-  .navbar-nav .nav-link {
-    color: #495057 !important; /* Koyu Gri */
-    transition: color 0.2s ease;
-    border-bottom: 2px solid transparent; /* Altta gizli çizgi */
-    padding-bottom: 0.7rem;
-  }
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-item .active .nav-link,
+.navbar-nav .nav-link.active {
+  color: #f00f22 !important; /* Kırmızı Vurgu */
+  border-bottom-color: #f00f22; /* Aktif/Hover'da kırmızı çizgi */
+}
 
-  .navbar-nav .nav-link:hover,
-  .navbar-nav .nav-link.active {
-    color: #f00f22 !important; /* Mavi Vurgu */
-    border-bottom-color: #f00f22; /* Aktif/Hover'da mavi çizgi */
+/* Mobil Boyutlandırma */
+@media (max-width: 992px) {
+  header .display-6 {
+    font-size: 2rem !important;
   }
+  header .fw-medium {
+    font-size: 0.7rem !important;
+  }
+}
 
-  /* Mobil Boyutlandırma */
-  @media (max-width: 992px) {
-    header .display-6 {
-      font-size: 2rem !important;
-    }
-    header .fw-medium {
-        font-size: 0.7rem !important;
-    }
-  }
+/* Haritanın sayfaya tam oturması için basit CSS */
+.map-container {
+  height: 400px;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.contact-info-icon {
+  font-size: 1.5rem;
+  width: 30px;
+}

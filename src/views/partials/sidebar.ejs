@@ -1,0 +1,85 @@
+<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-danger min-vh-100">
+  <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white">
+    <!-- Logo -->
+     
+     <div class="w-100 d-flex justify-content-center mb-3">
+      <a class="text-decoration-none text-center" href="/">
+        <img
+          src="/images/news-hub-logo.png"
+          alt="NewsHub Logo"
+          width="120"
+          height="120"
+          class="rounded-circle shadow mt-3"
+          style="object-fit:cover;"
+        />
+      </a>
+    </div>
+
+    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+      <li class="nav-item">
+        <a href="/" class="nav-link text-white">
+          <i class="bi bi-speedometer2"></i>
+          <span class="ms-2 d-none d-sm-inline">Anasayfa</span>
+        </a>
+      </li>
+
+      <% if (user && user.role === 'Admin') { %>
+         <li>
+          <a href="/admin" class="nav-link text-white <%= page_name === 'admin' ? ' active' : '' %>">
+           <i class="bi bi-shield-lock"></i>
+            <span class="ms-2 d-none d-sm-inline">Yönetim Paneli</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin/users" class="nav-link text-white <%= page_name === 'admin/users' ? ' active' : '' %>">
+            <i class="bi bi-people"></i>
+            <span class="ms-2 d-none d-sm-inline">Yazarlar</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin/posts" class="nav-link text-white <%= page_name === 'admin/posts' ? ' active' : '' %>">
+            <i class="bi bi-file-earmark-text"></i>
+            <span class="ms-2 d-none d-sm-inline">Haberler</span>
+          </a>
+        </li>
+        <li>
+          <a href="/dashboard" class="nav-link text-white <%= page_name === 'dashboard' ? ' active' : '' %>">
+            <i class="bi bi-file-earmark-text"></i>
+            <span class="ms-2 d-none d-sm-inline">Haber Ekle</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin/comments" class="nav-link text-white <%= page_name === 'comments/admin' ? ' active' : '' %>">
+            <i class="bi bi-chat-dots"></i>
+            <span class="ms-2 d-none d-sm-inline">Yorumlar</span>
+          </a>
+        </li>
+      <% } else { %>
+        <!-- user rolü için -->
+        <li>
+          <a href="/dashboard" class="nav-link text-white    <%= page_name === 'dashboard' ? ' active' : '' %>">
+            <i class="bi bi-file-earmark-text"></i>
+            <span class="ms-2 d-none d-sm-inline">Haberlerim</span>
+          </a>
+        </li>
+      <% } %>
+    </ul>
+
+    <hr>
+    <div class="dropdown pb-4">
+      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="d-none d-sm-inline mx-1"><%= user ? user.username : 'Misafir' %></span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-light text-small shadow">
+        <li><a class="dropdown-item  <%= page_name === 'profile' ? ' active' : '' %>" id="dropdown-item" href="/profile"><i class="bi bi-person"></i> Profil</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item <%= page_name === 'auth/logout' ? ' active' : '' %>"id="dropdown-item" href="/auth/logout"><i class="bi bi-box-arrow-right"></i> Çıkış</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arama Sonuçları | <%= searchQuery %></title>
+    <%- include("partials/bootstrap") %>
+    <link rel="stylesheet" href="/css/header.css"> 
+    <link rel="stylesheet" href="/css/main.css"> 
+</head>
+<body>
+
+    <%- include("partials/header") %>
+
+    <div class="container mt-5 mb-5">
+        
+        <% if (searchQuery) { %>
+            <h2>🔍 Arama Sonuçları: **<%= searchQuery %>**</h2>
+            <p class="text-muted">Toplam <%= posts.length %> sonuç bulundu.</p>
+        <% } %>
+
+        <hr>
+
+        <div class="row">
+            <% if (posts.length > 0) { %>
+                <% posts.forEach(post => { %>
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="/posts/<%= post._id %>" class="text-dark text-decoration-none">
+                                        <%= post.title %>
+                                    </a>
+                                </h5>
+                                <p class="card-text text-muted small">
+                                    <%= post.content.substring(0, 100) %>...
+                                </p>
+                            </div>
+                            <div class="card-footer bg-white border-top-0">
+                                <span class="badge  me-2" style="background-color: #D4C9BE;">
+                                    <%= post.category.name %>
+                                </span>
+                                <span class="text-muted small">
+                                    Yazar: <%= post.author.name %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="col-12">
+                    <div class="alert alert-warning" role="alert">
+                        Üzgünüz, aradığınız "**<%= searchQuery %>**" terimine uygun bir sonuç bulunamadı.
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+</body>
+</html>

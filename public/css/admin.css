@@ -1,0 +1,31 @@
+/* Genel admin panel teması */
+body {
+  background-color: #f3f2ec;
+}
+
+/* Kart yapılandırması */
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Başlık */
+.admin-title {
+  color: #1e93ab;
+}
+
+/* Kategori kartı scroll */
+.category-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.category-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.category-scroll::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 10px;
+}

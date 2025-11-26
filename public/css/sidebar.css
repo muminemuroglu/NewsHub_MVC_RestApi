@@ -1,0 +1,11 @@
+.nav-link.active,
+#dropdown-item {
+  background-color: #ffffff !important; /* Arka plan */
+  color: #1e93ab !important; /* Yazı rengi */
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.nav-link.active i {
+  color: #1e93ab !important; /* Icon rengi */
+}

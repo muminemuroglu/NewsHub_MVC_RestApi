@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Kullanıcı Paneli | NewsHub</title>
+
+    <%- include('partials/bootstrap'); %>
+  </head>
+  <body style="background-color: #f3f2ec">
+    <div class="container-fluid">
+      <div class="row flex-nowrap">
+        <!-- Sidebar (Ortak) -->
+        <%- include('partials/sidebar') %>
+
+        <!-- Main Content -->
+        <div class="col py-3">
+          <h2 class="mb-4 px-3" style="color: #1e93ab">Haber Ekleme Paneli</h2>
+          <!-- Yeni Post Ekle -->
+          <div class="card mb-5 mt-5 shadow-sm">
+            <div class="card-header bg-danger text-white">
+              <h4 class="mb-0">Yeni Post Ekle</h4>
+            </div>
+            <div class="card-body">
+              <form
+                method="POST"
+                action="/dashboard/postAdd"
+                enctype="multipart/form-data"
+              >
+                <!-- Başlık -->
+                <div class="mb-3">
+                  <label class="form-label">Başlık</label>
+                  <input
+                    type="text"
+                    name="title"
+                    class="form-control"
+                    placeholder="Başlık giriniz"
+                    required
+                  />
+                </div>
+
+                <!-- İçerik -->
+                <div class="mb-3">
+                  <label class="form-label">İçerik</label>
+                  <textarea
+                    name="content"
+                    class="form-control"
+                    placeholder="İçerik giriniz"
+                    rows="4"
+                    required
+                  ></textarea>
+                </div>
+
+                <!-- Kategori -->
+                <div class="mb-3">
+                  <label class="form-label">Kategori</label>
+                  <select name="category" class="form-select" required>
+                    <% if (categories && categories.length > 0) { %> <%
+                    categories.forEach(cat => { %>
+                    <option value="<%= cat._id %>"><%= cat.name %></option>
+                    <% }) %> <% } else { %>
+                    <option value="">Kategori yok</option>
+                    <% } %>
+                  </select>
+                </div>
+                <!-- 📌 Yeni Eklenen Resim Upload Alanı -->
+                <div class="mb-3">
+                  <label class="form-label">Kapak Resmi</label>
+                  <input type="file" name="image" class="form-control" />
+                </div>
+
+                <button type="submit" class="btn btn-outline-success w-100">
+                  Post Ekle
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Post Listesi -->
+          <div class="card shadow-sm">
+            <div class="card-header bg-danger text-white">
+              <h4 class="mb-0">Postlarınız</h4>
+            </div>
+            <div class="card-body">
+              <% if (!posts || posts.length === 0) { %>
+              <p class="text-muted">Henüz bir postunuz yok.</p>
+              <% } else { %>
+              <div class="list-group">
+                <% posts.forEach(post => { %>
+                <div class="list-group-item mb-3 border rounded">
+                  <h5 class="fw-bold"><%= post.title %></h5>
+                  <p><%= post.content %></p>
+                  <small class="text-muted">
+                    Tarih: <%= new Date(post.createdAt).toLocaleString() %>
+                  </small>
+                  <div class="mt-2 d-flex justify-content-between">
+                    <form
+                      method="POST"
+                      action="/dashboard/postDelete/<%= post._id %>"
+                      style="display: inline"
+                    >
+                      <button
+                        type="submit"
+                        class="btn btn-sm btn-outline-danger"
+                      >
+                        Sil
+                      </button>
+                    </form>
+                    <a
+                      href="/dashboard/postEdit/<%= post._id %>"
+                      class="btn btn-sm btn-outline-primary"
+                      >Düzenle</a
+                    >
+                  </div>
+                </div>
+                <% }) %>
+              </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

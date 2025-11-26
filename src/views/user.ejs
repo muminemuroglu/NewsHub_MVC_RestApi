@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Kullanıcı Yönetimi | Admin</title>
+    <%- include("partials/bootstrap") %>
+  </head>
+
+  <body style="background-color: #f3f2ec">
+    <div class="container-fluid">
+      <div class="row flex-nowrap">
+        <%- include("partials/sidebar") %>
+
+        <!-- Main Content -->
+        <div class="col py-4">
+          <h2 class="mb-4 px-3" style="color: #1e93ab">Tüm Yazarlar</h2>
+
+          <div class="card shadow-sm mb-5">
+            <div class="card-header bg-danger text-white">
+              <h4 class="mb-0">Kullanıcı Listesi</h4>
+            </div>
+            <div class="card-body p-0">
+              <table class="table table-hover mb-0">
+                <thead class="bg-danger text-white">
+                  <tr>
+                    <th>Ad</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Kayıt Tarihi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% users.forEach(u => { %>
+                  <tr>
+                    <td><%= u.name %></td>
+                    <td><%= u.email %></td>
+                    <td><%= u.roles %></td>
+                    <td><%= new Date(u.date).toLocaleString("tr-TR") %></td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

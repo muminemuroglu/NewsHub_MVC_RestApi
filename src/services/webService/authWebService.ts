@@ -1,6 +1,8 @@
-import UserDB, { IUser } from "../models/IUser";
-import { decrypt, encrypt } from "../utils/cryptoJS";
-import { Request } from "express";
+import UserDB, { IUser } from "../../models/IUser";
+import * as bcrypt from 'bcrypt'; 
+
+const SALT_ROUNDS = 10; // Bcrypt güvenlik seviyesi
+
 
 
 //UserLogin Fonk.
@@ -14,26 +16,31 @@ export const userLogin=(user:IUser):string |boolean=>{
     return true
 }
 
-//UserLoginDb Fonk.
+//UserLoginDb Fonk. (Bcrypt ile şifre kontrolü yapılıyor)
 
-export const userLoginDb = async (user: IUser, req:Request) => {
-    try {
-      const dbUser = await UserDB.findOne({email: user.email })
-      if (dbUser) {
-        const plainPassword = decrypt(dbUser.password)
-        if (plainPassword == user.password) {
-            req.session.item = dbUser
-            return true
-        }else {
-            return "Email or Password Fail"
-        }
-      }else {
-        return "Email or Password Fail"
-      }
-    } catch (error) {
-        console.error("userLoginDb error", error)
-    }
-}
+export const userLoginDb = async (user: IUser, req) => {
+  try {
+    const dbUser = await UserDB.findOne({ email: user.email });
+
+    if (!dbUser) return "Email or Password Fail";
+    const isMatch = await bcrypt.compare(user.password, dbUser.password); 
+
+    if (!isMatch) return "Email or Password Fail";
+
+    // Session oluşturma
+    req.session.user = {
+      id: dbUser._id.toString(),
+      name: dbUser.name,
+      role: Array.isArray(dbUser.roles) ? dbUser.roles[0] : dbUser.roles 
+    };
+
+    return true;
+  } catch (error) {
+    console.error("userLoginDb error", error);
+    return "An unknown error occured";
+  }
+};
+
 
 
 //UserRegister Fonk.
@@ -48,11 +55,11 @@ export const userRegister =(user:IUser):string | boolean =>{
    return true
 }
 
-//UserRegisterDB Fonk.
+//UserRegisterDB Fonk. (Bcrypt ile şifre hashleniyor)
 export const userRegisterDb =async (user :IUser)=>{
   try {
-    user.password= encrypt(user.password)
-    const newUser= new UserDB(user);
+    const hashedPassword = await bcrypt.hash(user.password, SALT_ROUNDS);
+    const newUser= new UserDB({...user, password: hashedPassword});
     await newUser.save();
      return true;
   } catch (error) {
@@ -66,7 +73,16 @@ export const userRegisterDb =async (user :IUser)=>{
   }
 }
 
-
+//Tüm Kullanıcıları Getiren Fonk.
+export const getAllUsers= async()=>{
+  try {
+    const users= await UserDB.find().sort({name:1});
+    return users;
+  } catch (error) {
+    console.error("getAllUsers error",error);
+    return [];
+  }
+};
 
 
 

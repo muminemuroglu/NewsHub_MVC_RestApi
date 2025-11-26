@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim | NewsHub</title>
+    <%- include("partials/bootstrap") %>
+    <link rel="stylesheet" href="/css/header.css">
+</head>
+<body>
+
+    <%- include("partials/header") %>
+
+    <div class="container my-5 mt-6">
+        <div class="text-start mb-5">
+            
+            <p class="lead text-muted">Aklınızdaki her türlü soru, öneri ve işbirliği talepleriniz için buradayız.</p>
+        </div>
+
+        <div class="row g-4">
+            
+            <div class="col-lg-7">
+                <div class="card shadow-lg border-0 h-100">
+                    <div class="card-body p-4 p-md-5">
+                        <h3 class="mb-4 fw-bold text-danger border-bottom pb-2">Mesajınızı İletin</h3>
+                        
+                        <form method="POST" action="/iletisim/gonder">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Adınız Soyadınız</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">E-posta Adresiniz</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                            </div>
+                            <div class="mb-3 mt-3">
+                                <label for="subject" class="form-label">Konu</label>
+                                <input type="text" class="form-control" id="subject" name="subject" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="message" class="form-label">Mesajınız</label>
+                                <textarea class="form-control" id="message" name="message" rows="6" required></textarea>
+                            </div>
+                            <button type="submit" class="btn  btn-lg bg-danger w-100 fw-bold text-white" >Mesajı Gönder</button>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card shadow-lg border-0 h-100 bg-light">
+                    <div class="card-body p-4 p-md-5">
+                        <h3 class="mb-4 fw-bold text-danger border-bottom pb-2">Kurumsal Bilgiler</h3>
+                        <ul class="list-unstyled">
+                            <li class="d-flex align-items-start mb-4">
+                                <div class="contact-info-icon me-3 text-danger"><i class="fas fa-envelope"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-0">E-posta Adresi</h6>
+                                    <p class="text-dark mb-0">info@newshub.com</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-start mb-4">
+                                <div class="contact-info-icon me-3 text-danger"><i class="fas fa-phone-alt"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-0">Telefon</h6>
+                                    <p class="text-dark mb-0">+90 555 123 45 67</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-start mb-4">
+                                <div class="contact-info-icon me-3 text-danger"><i class="fas fa-clock"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-0">Çalışma Saatleri</h6>
+                                    <p class="text-dark mb-0">Hafta İçi 09:00 - 18:00</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-start mb-4">
+                                <div class="contact-info-icon me-3 text-danger"><i class="fas fa-map-marker-alt"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-0">Adresimiz</h6>
+                                    <p class="text-dark mb-0">Örnek Mah. Teknoloji Cad. No: 123, İstanbul/Türkiye</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-12">
+                
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d153011.66699387433!2d32.61056588231584!3d39.90374677765103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d347d48348d641%3A0x6a19f6a7d65b63e8!2sAnkara!5e0!3m2!1str!2str!4v1709230000000!5m2!1str!2str" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+</body>
+</html>
